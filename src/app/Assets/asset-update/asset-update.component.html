@@ -1,0 +1,378 @@
+<div class="app-page-title">
+  <div class="page-title-wrapper">
+    <div class="page-title-heading">
+      <div class="page-title-icon">
+        <i class="icon {{icon}}"></i>
+      </div>
+      <div>
+        {{heading}}
+        <div class="page-title-subheading">
+          {{subheading}}
+        </div>
+      </div>
+    </div>
+    <!-- <div class="page-title-actions">
+      <button type="button" class="btn-shadow d-inline-flex align-items-center btn btn-success">
+        <fa-icon [icon]="faPlus" class="me-2"></fa-icon>
+        Create New
+      </button>
+    </div> -->
+  </div>
+</div>
+<!-- <button (click)="confirmBox()">Confirm Box</button> -->
+
+<div class="main-card mb-3 card">
+  <div class="card-body">
+    <form class="form" [formGroup]="myForm" (ngSubmit)="onSubmit()" autocomplete="off">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="position-relative mb-3 required">
+            <label for="type" class="form-label">Property Type</label>
+            <select id="type" class="form-select" formControlName="type"
+              [ngClass]="{ 'is-invalid': submitted && f.type.errors }" (change)="changePropertyType($event)">
+              <option value="" disabled hidden selected>
+                Select Property Type
+              </option>
+              <option value="commercial">Commercial</option>
+              <option value="residential">Residential</option>
+              <option value="owned">Owned</option>
+            </select>
+            <span class="text-danger" *ngIf="(f.type.touched || submitted) && f.type.errors?.required">
+              This field is required.
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3 required">
+            <label for="owner" class="form-label">Owner</label>
+            <select id="owner" class="form-select" formControlName="owner"
+              [ngClass]="{ 'is-invalid': submitted && f.owner.errors }">
+              <option value="" disabled hidden selected>
+                Select an Owner
+              </option>
+              <option *ngFor="let owner of owners" [value]="owner._id">{{owner.name | titlecase}}</option>
+            </select>
+            <span class="text-danger" *ngIf="(f.owner.touched || submitted) && f.owner.errors?.required">
+              This field is required.
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3 required">
+            <label for="allotee" class="form-label">Allotee Name</label>
+            <input type="text" class="form-control" id="allotee" formControlName="allotee" placeholder="Allotee Name"
+              [ngClass]="{ 'is-invalid': submitted && f.allotee.errors }">
+            <span class="text-danger" *ngIf="(f.allotee.touched || submitted) && f.allotee.errors?.required">
+              This field is required.
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3 required">
+            <label for="flatnumber" class="form-label">Flat Number</label>
+            <input type="text" class="form-control" id="flatnumber" formControlName="flatnumber"
+              placeholder="Flat Number" [ngClass]="{ 'is-invalid': submitted && f.flatnumber.errors }">
+            <span class="text-danger" *ngIf="(f.flatnumber.touched || submitted) && f.flatnumber.errors?.required">
+              This field is required.
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3 required">
+            <label for="address" class="form-label">Address</label>
+            <input type="text" class="form-control" id="address" formControlName="address" placeholder="Address"
+              [ngClass]="{ 'is-invalid': submitted && f.address.errors }">
+            <span class="text-danger" *ngIf="(f.address.touched || submitted) && f.address.errors?.required">
+              This field is required.
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3 required">
+            <label for="location" class="form-label">Location/Area</label>
+            <input type="text" class="form-control" id="location" formControlName="location" placeholder="Location"
+              [ngClass]="{ 'is-invalid': submitted && f.location.errors }">
+            <span class="text-danger" *ngIf="(f.location.touched || submitted) && f.location.errors?.required">
+              This field is required.
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3 required">
+            <label for="state" class="form-label">State</label>
+            <select id="state" class="form-select" formControlName="state"
+              [ngClass]="{ 'is-invalid': submitted && f.state.errors }" (change)="changeState($event)">
+              <option value="" disabled hidden selected>
+                Select a State
+              </option>
+              <option *ngFor="let state of states" [value]="state._id">{{state.name | titlecase}}</option>
+            </select>
+            <span class="text-danger" *ngIf="(f.state.touched || submitted) && f.state.errors?.required">
+              This field is required.
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3 required">
+            <label for="city" class="form-label">City</label>
+            <select id="city" class="form-select" formControlName="city"
+              [ngClass]="{ 'is-invalid': submitted && f.city.errors }">
+              <option value="" disabled hidden selected>
+                Select a City
+              </option>
+              <option *ngFor="let city of cities" [value]="city._id">{{city.name | titlecase}}</option>
+            </select>
+            <span class="text-danger" *ngIf="(f.city.touched || submitted) && f.city.errors?.required">
+              This field is required.
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3 required">
+            <label for="zipcode" class="form-label">Zip Code</label>
+            <input type="text" class="form-control" id="zipcode" formControlName="zipcode" placeholder="Zip Code"
+              [ngClass]="{ 'is-invalid': submitted && f.zipcode.errors }">
+            <span class="text-danger" *ngIf="(f.zipcode.touched || submitted) && f.zipcode.errors?.required">
+              This field is required.
+            </span>
+            <span class="text-danger" *ngIf="f.zipcode.touched && f.zipcode.errors?.pattern">
+              It must be a number only.
+            </span>
+            <span class="text-danger" *ngIf="f.zipcode.touched && f.zipcode.errors?.minlength">
+              The value must be 6 digit.
+            </span>
+            <span class="text-danger" *ngIf="f.zipcode.touched && f.zipcode.errors?.maxlength">
+              The value must be 6 digit.
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3">
+            <label for="area" class="form-label">Area (Square Feet)</label>
+            <input type="text" class="form-control" id="area" formControlName="area" placeholder="Area">
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3">
+            <div class="col-md-6 required" style="float: left;">
+              <label for="agreementperiod" class="form-label">Agreement Period</label>
+              <input type="text" class="form-control" id="agreementperiod" formControlName="agreementperiod"
+                placeholder="Agreement Period" [ngClass]="{ 'is-invalid': submitted && f.agreementperiod.errors }">
+              <span class="text-danger"
+                *ngIf="(f.agreementperiod.touched || submitted) && f.agreementperiod.errors?.required">
+                This field is required.
+              </span>
+              <span class="text-danger" *ngIf="f.agreementperiod.touched && f.agreementperiod.errors?.pattern">
+                It must be a number only.
+              </span>
+            </div>
+            <div class="col-md-6" style="float: left;">
+              <label for="agreementtime" class="form-label">&nbsp;</label>
+              <select id="agreementtime" class="form-select" formControlName="agreementtime"
+                [ngClass]="{ 'is-invalid': submitted && f.agreementtime.errors }">
+                <option value="" disabled hidden selected>
+                  Select an option
+                </option>
+                <option value="year">Year</option>
+                <option value="month">Month</option>
+              </select>
+              <span class="text-danger" *ngIf="(f.agreementtime.touched || submitted) && f.agreementtime.errors?.required">
+                This field is required.
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3 required">
+            <label for="lcd" class="form-label">Lease Commencement Date</label>
+            <input type="text" class="form-control" id="lcd" formControlName="lcd" placeholder="DD-MM-YYYY"
+              [ngClass]="{ 'is-invalid': submitted && f.lcd.errors }">
+            <span class="text-danger" *ngIf="(f.lcd.touched || submitted) && f.lcd.errors?.required">
+              This field is required.
+            </span>
+            <span class="text-danger" *ngIf="f.lcd.touched && f.lcd.errors?.pattern">
+              Enter a valid date.
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3 required">
+            <label for="rcd" class="form-label">Rent Commencement Date</label>
+            <input type="text" class="form-control" id="rcd" formControlName="rcd" placeholder="DD-MM-YYYY"
+              [ngClass]="{ 'is-invalid': submitted && f.rcd.errors }">
+            <span class="text-danger" *ngIf="(f.rcd.touched || submitted) && f.rcd.errors?.required">
+              This field is required.
+            </span>
+            <span class="text-danger" *ngIf="f.rcd.touched && f.rcd.errors?.pattern">
+              Enter a valid date.
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3 required">
+            <label for="red" class="form-label">Agreement Expiry Date</label>
+            <input type="text" class="form-control" id="red" formControlName="red" placeholder="DD-MM-YYYY"
+              [ngClass]="{ 'is-invalid': submitted && f.red.errors }">
+            <span class="text-danger" *ngIf="(f.red.touched || submitted) && f.red.errors?.required">
+              This field is required.
+            </span>
+            <span class="text-danger" *ngIf="f.red.touched && f.red.errors?.pattern">
+              Enter a valid date.
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3">
+            <label for="lip" class="form-label">Lock in Period (in Month)</label>
+            <input type="text" class="form-control" id="lip" formControlName="lip" placeholder="Lock in Period">
+            <span class="text-danger" id="errlip" style="display: none;"></span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3">
+            <label for="rad" class="form-label">Rent Escalation Date</label>
+            <input type="text" class="form-control" id="rad" formControlName="rad" placeholder="Rent Escalation Date">
+            <span class="text-danger" id="errrad" style="display: none;"></span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3 required">
+            <label for="amount" class="form-label">Rent Amount</label>
+            <input type="text" class="form-control" id="amount" formControlName="amount" placeholder="Rent Amount"
+              [ngClass]="{ 'is-invalid': submitted && f.amount.errors }">
+            <span class="text-danger" *ngIf="(f.amount.touched || submitted) && f.amount.errors?.required">
+              This field is required.
+            </span>
+            <span class="text-danger" *ngIf="f.amount.touched && f.amount.errors?.pattern">
+              It must be a number only.
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3">
+            <div class="col-md-6 required" style="float: left;">
+              <label for="increaseat" class="form-label">Increase in Rent</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="increaseat" formControlName="increaseat" placeholder="5"
+                  [ngClass]="{ 'is-invalid': submitted && f.increaseat.errors }">
+                <div class="input-group-text"><span>%</span></div>
+              </div>
+              <span class="text-danger"
+                *ngIf="(f.increaseat.touched || submitted) && f.increaseat.errors?.required">
+                This field is required.
+              </span>
+              <span class="text-danger" *ngIf="f.increaseat.touched && f.increaseat.errors?.pattern">
+                It must be any number between 1 and 100.
+              </span>
+            </div>
+            <div class="col-md-6" style="float: left;">
+              <label for="increaseat" class="form-label">&nbsp;</label>
+              <div class="input-group">
+                <div class="input-group-text"><span>Every</span></div>
+                <input type="text" class="form-control" id="increaseon" formControlName="increaseon" placeholder="1"
+                  [ngClass]="{ 'is-invalid': submitted && f.increaseon.errors }">
+                <div class="input-group-text"><span>Year</span></div>
+              </div>
+              <span class="text-danger" *ngIf="(f.increaseon.touched || submitted) && f.increaseon.errors?.required">
+                This field is required.
+              </span>
+              <span class="text-danger" *ngIf="f.increaseon.touched && f.increaseon.errors?.pattern">
+                It must be any number between 1 and 99.
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3">
+            <label for="sda" class="form-label">Security Deposit Amount</label>
+            <input type="text" class="form-control" id="sda" formControlName="sda" placeholder="Security Deposit Amount">
+            <span class="text-danger" id="errsda" style="display: none;"></span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3">
+            <label for="sdd" class="form-label">Security Deposit Description</label>
+            <input type="text" class="form-control" id="sdd" formControlName="sdd" placeholder="Security Deposit Description">
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3">
+            <label for="remarks" class="form-label">Remarks</label>
+            <input type="text" class="form-control" id="remarks" formControlName="remarks" placeholder="Remarks">
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3 required">
+            <label for="pdd" class="form-label">Payment Due Date</label>
+            <div class="input-group">
+              <div class="input-group-text"><span class="font13">On or before</span></div>
+              <input type="text" class="form-control" id="pdd" formControlName="pdd" placeholder="5"
+              [ngClass]="{ 'is-invalid': submitted && f.pdd.errors }" style="text-align: center;">
+              <div class="input-group-text"><span class="font13">th day of each calender month on advance basis.</span></div>
+            </div>
+            <span class="text-danger" *ngIf="(f.pdd.touched || submitted) && f.pdd.errors?.required">
+              This field is required.
+            </span>
+            <span class="text-danger" id="errpdd" style="display: none;"></span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3">
+            <label for="pattern" class="form-label">Payment Pattern</label>
+            <textarea rows="6" class ="form-control" formControlName="pattern"></textarea>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3">
+            <label for="record" class="form-label">Previous Record</label>
+            <textarea rows="6" class ="form-control" formControlName="record"></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="dropdown-divider" style="margin: 10px 10px;"></div>
+        </div>
+
+        <div class="col-md-12 formError" style="text-align: center; display: none;">
+          <span class="text-danger" id="errorMsg" style="font-weight: 600; font-size:13px;"></span>
+        </div>
+        <div class="row formError" style="display: none;">
+          <div class="dropdown-divider" style="margin: 10px 10px;"></div>
+        </div>
+
+        <div class="col-md-6" style="text-align: center;">
+          &nbsp;
+        </div>
+        <div class="col-md-6" style="text-align: center;">
+          <button *ngIf="!btnLoader" type="submit" class="mt-1 btn btn-success"
+            style="padding: 6px 30px;">Submit</button>
+          <button *ngIf="btnLoader" type="submit" class="mt-1 btn btn-success disabled"
+            style="padding: 6px 30px;">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

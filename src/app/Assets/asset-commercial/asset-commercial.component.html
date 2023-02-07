@@ -1,0 +1,224 @@
+<div class="app-page-title">
+  <div class="page-title-wrapper">
+    <div class="page-title-heading">
+      <div class="page-title-icon">
+        <i class="icon {{icon}}"></i>
+      </div>
+      <div>
+        {{heading}}
+        <div class="page-title-subheading">
+          {{subheading}}
+        </div>
+      </div>
+    </div>
+    <div class="page-title-actions">
+      <button type="button" class="btn-shadow d-inline-flex align-items-center btn btn-success"
+        (click)="redirectPage('/asset/create?type=commercial')">
+        <fa-icon [icon]="faPlus" class="me-2"></fa-icon>
+        Create New
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="main-card mb-3 card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-md-3">
+        <input type="text" id="name" placeholder="Search by Allotee Name" (keyup)="filterName($event)"
+          class="mb-2 form-control" autocomplete="off" />
+      </div>
+      <div class="col-md-3">
+        <input type="text" id="flatno" placeholder="Search by Flat No." (keyup)="filterFlat($event)"
+          class="mb-2 form-control" autocomplete="off" />
+      </div>
+      <div class="col-md-3">
+        <input type="text" id="expire" placeholder="Search by Expire Date" (keyup)="filterExpire($event)"
+          class="mb-2 form-control" autocomplete="off" />
+      </div>
+      <div class="col-md-3">
+        <button class="mb-2 me-2 btn-transition btn btn-outline-warning" (click)="clearAll()" style="width: 100%;">Reset
+        </button>
+      </div>
+    </div>
+  </div>
+  {{closeResult}}
+  <ngx-datatable #myTable class="material ngx-datatable" [rows]="assets" [scrollbarH]="true" [headerHeight]="50"
+    [footerHeight]="50" [rowHeight]="50" [limit]="10" [sorts]="[{prop: 'name', dir: 'asc'}]">
+
+    <ngx-datatable-column name="Allotee" prop="allotee" [width]="170">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        {{row.allotee | titlecase}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Flat No." prop="flatNo" [width]="90">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        {{row.flatNo}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Address" prop="address" [width]="180">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        {{row.address}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Rent (&#8377;)" prop="rentAmount" [width]="80">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        {{row.rentAmount}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Lease C. Date" prop="leaseCommencementDate" [width]="110">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        {{row.leaseCommencementDate | date:'dd-MM-yyyy'}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Expire On" prop="agreementExpiryDate" [width]="100">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        {{row.agreementExpiryDate | date:'dd-MM-yyyy'}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="isLive" prop="isOccupied" [width]="80">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <div *ngIf="row.isActive && row.isOccupied" class="badge rounded-pill bg-warning" style="cursor:pointer;" (click)="confirmBoxFlat(row._id, 0)" placement="bottom" ngbTooltip="Vacant">Live</div>
+        <div *ngIf="row.isActive && !row.isOccupied" class="badge rounded-pill bg-success" style="cursor:pointer;" (click)="confirmBoxFlat(row._id, 1)" placement="bottom" ngbTooltip="Live">Vacant</div>
+        <div *ngIf="!row.isActive" class="badge rounded-pill bg-alternate">In Active</div>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Status" prop="isActive" [width]="80">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <div *ngIf="row.isActive" class="badge rounded-pill bg-success" style="cursor:pointer;" (click)="confirmBoxStatus(row._id, 0, row.ownerId)" placement="bottom" ngbTooltip="Deactivate">Active</div>
+        <div *ngIf="!row.isActive" class="badge rounded-pill bg-warning" style="cursor:pointer;" (click)="confirmBoxStatus(row._id, 1, row.ownerId)" placement="bottom" ngbTooltip="Activate">In Active</div>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Action" cellClass="d-flex align-items-center" [sortable]="false" [width]="125">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <div class="action">
+          <a [routerLink]="" (click)="viewPopup(details, row._id)" placement="bottom" ngbTooltip="Details"><i class="icon pe-7s-light"
+              style="color: #ffffff !important;"></i></a>
+        </div>
+        <div class="action">
+          <a [routerLink]="" (click)="redirectPage('/asset/update?aid='+row._id)" placement="bottom" ngbTooltip="Edit"><i class="icon pe-7s-pen" style="color: #ffffff !important;"></i></a>
+        </div>
+        <div class="action">
+          <a [routerLink]="" (click)="confirmBoxDelete(row._id)" placement="bottom" ngbTooltip="Delete"><i class="icon pe-7s-trash" style="color: #ffffff !important;"></i></a>
+        </div>
+      </ng-template>
+    </ngx-datatable-column>
+  </ngx-datatable>
+</div>
+
+<ng-template #details let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Owner Details</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="d('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-3 detail_popup_top1">Allotee Name</div>
+      <div class="col-md-1 detail_popup_top2">:</div>
+      <div class="col-md-8 detail_popup_top3">{{temp2[0].allotee | titlecase}}</div>
+
+      <div class="col-md-3 detail_popup_middle1">Address</div>
+      <div class="col-md-1 detail_popup_middle2">:</div>
+      <div class="col-md-8 detail_popup_middle3">
+        {{temp2[0].flatNo}}, {{temp2[0].address}}, {{temp2[0].location}},<br>
+        {{temp2[0].city.name}}, {{temp2[0].state.name}} - {{temp2[0].zipCode}}
+      </div>
+
+      <div class="col-md-3 detail_popup_middle1">Area (Square Feet)</div>
+      <div class="col-md-1 detail_popup_middle2">:</div>
+      <div class="col-md-8 detail_popup_middle3">{{temp2[0].area}}</div>
+
+      <div class="col-md-3 detail_popup_middle1">Agreement Period</div>
+      <div class="col-md-1 detail_popup_middle2">:</div>
+      <div class="col-md-8 detail_popup_middle3">{{temp2[0].agreementPeriod}} {{temp2[0].agreementType}}</div>
+
+      <div class="col-md-3 detail_popup_middle1" style="padding-right: 0px;">Lease Commencement Date</div>
+      <div class="col-md-1 detail_popup_middle2">:</div>
+      <div class="col-md-8 detail_popup_middle3">{{temp2[0].leaseCommencementDate | date:'dd-MM-yyyy'}}</div>
+
+      <div class="col-md-3 detail_popup_middle1">Rent Commencement Date</div>
+      <div class="col-md-1 detail_popup_middle2">:</div>
+      <div class="col-md-8 detail_popup_middle3">{{temp2[0].rentCommencementDate | date:'dd-MM-yyyy'}}</div>
+
+      <div class="col-md-3 detail_popup_middle1">Agreement Expiry Date</div>
+      <div class="col-md-1 detail_popup_middle2">:</div>
+      <div class="col-md-8 detail_popup_middle3">{{temp2[0].agreementExpiryDate | date:'dd-MM-yyyy'}}</div>
+
+      <div class="col-md-3 detail_popup_middle1">Lock in Period (in Month)</div>
+      <div class="col-md-1 detail_popup_middle2">:</div>
+      <div class="col-md-8 detail_popup_middle3">{{temp2[0].LockInPeriod}}</div>
+
+      <div class="col-md-3 detail_popup_middle1">Rent Escalation Date</div>
+      <div class="col-md-1 detail_popup_middle2">:</div>
+      <div class="col-md-8 detail_popup_middle3">{{temp2[0].rentEscalationDate}}</div>
+
+      <div class="col-md-3 detail_popup_middle1">Rent Amount</div>
+      <div class="col-md-1 detail_popup_middle2">:</div>
+      <div class="col-md-8 detail_popup_middle3">{{temp2[0].rentAmount}}</div>
+
+      <div class="col-md-3 detail_popup_middle1">Increase in Rent</div>
+      <div class="col-md-1 detail_popup_middle2">:</div>
+      <div class="col-md-8 detail_popup_middle3">{{temp2[0].increaseRentPercent}}% every {{temp2[0].increaseRentPeriod}} year.</div>
+
+      <div class="col-md-3 detail_popup_middle1">Security Deposit Amount</div>
+      <div class="col-md-1 detail_popup_middle2">:</div>
+      <div class="col-md-8 detail_popup_middle3">{{temp2[0].securityDepositAmount}}</div>
+
+      <div class="col-md-3 detail_popup_middle1">Security Deposit Description</div>
+      <div class="col-md-1 detail_popup_middle2">:</div>
+      <div class="col-md-8 detail_popup_middle3">{{temp2[0].securityDepositDescription}}</div>
+
+      <div class="col-md-3 detail_popup_middle1">Remarks</div>
+      <div class="col-md-1 detail_popup_middle2">:</div>
+      <div class="col-md-8 detail_popup_middle3">{{temp2[0].remarks}}</div>
+
+      <div class="col-md-3 detail_popup_middle1">Payment Due Date</div>
+      <div class="col-md-1 detail_popup_middle2">:</div>
+      <div class="col-md-8 detail_popup_middle3">On or before {{temp2[0].paymentDueDate}} st/nd/th day of each calender month on advance basis.</div>
+
+      <div class="col-md-3 detail_popup_middle1">Payment Pattern</div>
+      <div class="col-md-1 detail_popup_middle2">:</div>
+      <div class="col-md-8 detail_popup_middle3" style="white-space: pre-line;">{{temp2[0].paymentPattern}}</div>
+
+      <div class="col-md-3 detail_popup_middle1">Previous Record</div>
+      <div class="col-md-1 detail_popup_middle2">:</div>
+      <div class="col-md-8 detail_popup_middle3" style="white-space: pre-line;">{{temp2[0].previousRecord}}</div>
+
+      <div class="col-sm-3 detail_popup_middle1" style="background-color: #88b557;">Owner Name</div>
+      <div class="col-md-1 detail_popup_middle2" style="background-color: #88b557;">:</div>
+      <div class="col-md-8 detail_popup_middle3" style="background-color: #88b557;">
+        {{temp2[0].owner.name | titlecase}} ({{temp2[0].owner.glCode}})
+      </div>
+
+      <div class="col-sm-3 detail_popup_bottom1">Owner Mobile No.</div>
+      <div class="col-md-1 detail_popup_bottom2">:</div>
+      <div class="col-md-8 detail_popup_bottom3">{{temp2[0].owner.phone}}</div>
+
+      <div *ngIf="temp2[0].coowners.length">
+        <div class="col-md-12 coowner_head">Co-Owner</div>
+
+        <div *ngFor="let co of temp2[0].coowners" class="coowner_div">
+          <div class="col-md-3 detail_popup_middle1 fl">Name</div>
+          <div class="col-md-1 detail_popup_middle2 fl">:</div>
+          <div class="col-md-8 detail_popup_middle3 fl">{{co.name}} ({{co.glCode}})</div>
+
+          <div class="col-md-3 detail_popup_bottom1 fl">Mobile</div>
+          <div class="col-md-1 detail_popup_bottom2 fl">:</div>
+          <div class="col-md-8 detail_popup_bottom3 fl">{{co.phone}}</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>

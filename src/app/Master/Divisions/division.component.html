@@ -1,0 +1,129 @@
+<div class="app-page-title">
+  <div class="page-title-wrapper">
+    <div class="page-title-heading">
+      <div class="page-title-icon">
+        <i class="icon {{icon}}"></i>
+      </div>
+      <div>
+        {{heading}}
+        <div class="page-title-subheading">
+          {{subheading}}
+        </div>
+      </div>
+    </div>
+    <div class="page-title-actions">
+      <button type="button" class="btn-shadow d-inline-flex align-items-center btn btn-success"
+        (click)="addPopup(add)">
+        <fa-icon [icon]="faPlus" class="me-2"></fa-icon>
+        Create New
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="main-card mb-3 card">
+  <!-- <div class="card-header">
+    <div class="row">
+      <div class="col-md-3">
+        <button class="mb-2 me-2 btn-hover-shine btn btn-info" style="width: 100%;">Residential
+        </button>
+      </div>
+      <div class="col-md-3">
+        <button class="mb-2 me-2 btn-transition btn btn-outline-info" (click)="redirectPage('/owner/commercial')" style="width: 100%;">Commercial
+        </button>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="card-header">
+    <div class="row">
+      <div class="col-md-4">
+        <input type="text" id="name" placeholder="Search by Division Name" (keyup)="filterName($event)"
+          class="mb-2 form-control" autocomplete="off" />
+      </div>
+      <div class="col-md-4">
+        <input type="text" id="division" placeholder="Search by Division Code" (keyup)="filterDivision($event)"
+          class="mb-2 form-control" autocomplete="off" />
+      </div>
+      <!-- <div class="col-md-3">
+        <input type="text" id="phone" placeholder="Search by Mobile No." (keyup)="filterPhone($event)"
+          class="mb-2 form-control" autocomplete="off" />
+      </div> -->
+      <div class="col-md-4">
+        <button class="mb-2 me-2 btn-transition btn btn-outline-warning" (click)="clearAll()" style="width: 100%;">Reset
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ngx-datatable #myTable class="material ngx-datatable" [rows]="records" [scrollbarH]="true" [headerHeight]="50"
+    [footerHeight]="50" [rowHeight]="50" [limit]="10" [sorts]="[{prop: 'name', dir: 'asc'}]">
+
+    <ngx-datatable-column name="Division" prop="name" [width]="500">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        {{row.name | titlecase}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="SAP Code" prop="division" [width]="240">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        {{row.division}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Status" prop="status" [width]="150">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <div *ngIf="row.status" class="badge rounded-pill bg-success" style="cursor:pointer;" (click)="confirmBoxStatus(row._id, 0)" placement="bottom" ngbTooltip="Deactivate">Active</div>
+        <div *ngIf="!row.status" class="badge rounded-pill bg-warning" style="cursor:pointer;" (click)="confirmBoxStatus(row._id, 1)" placement="bottom" ngbTooltip="Activate">In Active</div>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Action" cellClass="d-flex align-items-center" [sortable]="false" [width]="125">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <!-- <div class="action">
+          <a [routerLink]="" (click)="viewPopup(details, row._id)" placement="bottom" ngbTooltip="Details">
+            <i class="icon pe-7s-light" style="color: #ffffff !important;"></i>
+          </a>
+        </div> -->
+        <div class="action">
+          <a [routerLink]="" (click)="redirectPage('/owner/update?oid='+row._id)" placement="bottom" ngbTooltip="Edit">
+            <i class="icon pe-7s-pen" style="color: #ffffff !important;"></i>
+          </a>
+        </div>
+        <div class="action">
+          <a [routerLink]="" (click)="confirmBoxDelete(row._id)" placement="bottom" ngbTooltip="Delete">
+            <i class="icon pe-7s-trash" style="color: #ffffff !important;"></i>
+          </a>
+        </div>
+      </ng-template>
+    </ngx-datatable-column>
+  </ngx-datatable>
+</div>
+
+<ng-template #add let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Add Division</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="d('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-3 detail_popup_top1">Division</div>
+      <div class="col-md-1 detail_popup_top2">:</div>
+      <div class="col-md-8 detail_popup_top3">
+        <input type="text" name="dname" id="dname" value="" class="txtbx">
+      </div>
+      <div class="col-md-12" id="errdname" class="text-danger ng-star-inserted" style="display:none; padding-left: 175px;"></div>
+
+      <div class="col-md-3 detail_popup_middle1">SAP Code</div>
+      <div class="col-md-1 detail_popup_middle2">:</div>
+      <div class="col-md-8 detail_popup_middle3">
+        <input type="text" name="dcode" id="dcode" value="" class="txtbx">
+      </div>
+      <div class="col-md-12" id="errdcode" class="text-danger ng-star-inserted" style="display:none; padding-left: 175px;"></div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')" style="padding: 6px 20px;">Close</button>
+    <button type="button" class="btn btn-success" (click)="onSubmit()" style="padding: 6px 14px;">Submit</button>
+  </div>
+</ng-template>

@@ -1,0 +1,414 @@
+<div class="app-page-title" (click)="hideInput()">
+  <div class="page-title-wrapper">
+    <div class="page-title-heading">
+      <div class="page-title-icon">
+        <i class="icon {{icon}}"></i>
+      </div>
+      <div>
+        {{heading}}
+        <div class="page-title-subheading">
+          {{subheading}}
+        </div>
+      </div>
+    </div>
+    <div class="page-title-actions">
+      <button type="button" class="btn-shadow d-inline-flex align-items-center btn btn-success"
+        (click)="viewPopup(details)">
+        <fa-icon [icon]="faPlus" class="me-2"></fa-icon>
+        Create New
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="main-card mb-3 card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-md-3">
+        <input type="text" id="name" placeholder="Search by Owner Name" (keyup)="filterName($event)"
+          class="mb-2 form-control" autocomplete="off" />
+      </div>
+      <div class="col-md-3">
+        <input type="text" id="glcode" placeholder="Search by GL Code" (keyup)="filterGlCode($event)"
+          class="mb-2 form-control" autocomplete="off" />
+      </div>
+      <div class="col-md-3">
+        <input type="text" id="phone" placeholder="Search by Flat No." (keyup)="filterFlat($event)"
+          class="mb-2 form-control" autocomplete="off" />
+      </div>
+      <div class="col-md-3">
+        <button class="mb-2 me-2 btn-transition btn btn-outline-warning" (click)="clearAll()" style="width: 100%;">Reset
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="col-md-12">
+    <div style="display: inline-block; width: 40%; vertical-align: top;">
+      <div>
+        <div class="head_single ptb11 text-center border_right" style="width: 22%;">Flat No</div>
+        <div class="head_single ptb11 pl5 border_right" style="width: 60%;">Owner Name</div>
+        <div class="head_single ptb11 border_right text-center" style="width: 18%;">GL Code</div>
+      </div>
+      <div class="border_bottom" *ngFor="let record of records" style="padding: 6px 0;">
+        <div class="data_single pl5" style="width: 22%;">
+          <a [routerLink]="" placement="top"
+            ngbTooltip="{{record.asset.flatNo | titlecase}}, {{record.asset.address| titlecase}}, {{record.asset.location | titlecase}}">
+            {{record.asset.flatNo}}
+          </a>
+        </div>
+        <div class="data_single pl5" style="width: 60%;">
+          <a [routerLink]="" placement="top" ngbTooltip="{{record.owner.name | titlecase}}">
+            {{ (record.owner.name.length>32)? (record.owner.name | slice:0:32 | titlecase)+'..':(record.owner.name |
+            titlecase) }}
+          </a>
+        </div>
+        <div class="data_single text-center" style="width: 18%;">{{record.owner.glCode}}</div>
+      </div>
+    </div>
+
+    <div style="display: inline-block; width: 60%;">
+      <div class="double_heading">
+        <div class="border_bottom" style="display: inherit;">
+          <div class="headfloatLeft">
+            <div class="innerhead">APRIL {{currentYear}}</div>
+            <div class="innerhead2 border_right">Cheque No</div>
+            <div class="innerhead2">Amount</div>
+          </div>
+          <div class="headfloatLeft border_left">
+            <div class="innerhead">MAY {{currentYear}}</div>
+            <div class="innerhead2 border_right">Cheque No</div>
+            <div class="innerhead2">Amount</div>
+          </div>
+          <div class="headfloatLeft border_left">
+            <div class="innerhead">JUNE {{currentYear}}</div>
+            <div class="innerhead2 border_right">Cheque No</div>
+            <div class="innerhead2">Amount</div>
+          </div>
+          <div class="headfloatLeft border_left">
+            <div class="innerhead">JULY {{currentYear}}</div>
+            <div class="innerhead2 border_right">Cheque No</div>
+            <div class="innerhead2">Amount</div>
+          </div>
+          <div class="headfloatLeft border_left">
+            <div class="innerhead">AUGUST {{currentYear}}</div>
+            <div class="innerhead2 border_right">Cheque No</div>
+            <div class="innerhead2">Amount</div>
+          </div>
+          <div class="headfloatLeft border_left">
+            <div class="innerhead">SEPTEMBER {{currentYear}}</div>
+            <div class="innerhead2 border_right">Cheque No</div>
+            <div class="innerhead2">Amount</div>
+          </div>
+          <div class="headfloatLeft border_left">
+            <div class="innerhead">OCTOBER {{currentYear}}</div>
+            <div class="innerhead2 border_right">Cheque No</div>
+            <div class="innerhead2">Amount</div>
+          </div>
+          <div class="headfloatLeft border_left">
+            <div class="innerhead">NOVEMBER {{currentYear}}</div>
+            <div class="innerhead2 border_right">Cheque No</div>
+            <div class="innerhead2">Amount</div>
+          </div>
+          <div class="headfloatLeft border_left">
+            <div class="innerhead">DECEMBER {{currentYear}}</div>
+            <div class="innerhead2 border_right">Cheque No</div>
+            <div class="innerhead2">Amount</div>
+          </div>
+          <div class="headfloatLeft border_left">
+            <div class="innerhead">JANUARY {{nextYear}}</div>
+            <div class="innerhead2 border_right">Cheque No</div>
+            <div class="innerhead2">Amount</div>
+          </div>
+          <div class="headfloatLeft border_left">
+            <div class="innerhead">FEBRUARY {{nextYear}}</div>
+            <div class="innerhead2 border_right">Cheque No</div>
+            <div class="innerhead2">Amount</div>
+          </div>
+          <div class="headfloatLeft border_left">
+            <div class="innerhead">MARCH {{nextYear}}</div>
+            <div class="innerhead2 border_right">Cheque No</div>
+            <div class="innerhead2">Amount</div>
+          </div>
+        </div>
+
+        <div *ngFor="let record of records">
+          <div class="datafloatLeft border_bottom" *ngFor="let payment of record.payments;  let i = index">
+            <div class="innerdata" (dblclick)="chequeClick($event, payment.month, payment._id)">
+              <div class="amount_text" id="chkamt_{{payment.month}}_{{payment._id}}" attr="{{payment.chequeNo}}">{{payment.chequeNo}}</div>
+              <div class="amount_input" id="chktxt_{{payment.month}}_{{payment._id}}" style="display: none;">
+                <input class="payment_input" type="text" id="chk_input_{{payment.month}}_{{payment._id}}" value="{{payment.chequeNo}}"
+                  (keyup)="chequeInput($event, payment.month, payment.year, payment._id)">
+              </div>
+            </div>
+            <div class="innerdata">
+              <div class="amount_text" id="amtamt{{payment.month}}">{{payment.amount}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <div id="loader" class="text-center" style="margin: 15px 0px;">
+    <img src="./../../assets/images/loader.gif" style="width: 22px;">
+    <p style="letter-spacing: 0.5px;">Loading please wait...</p>
+  </div>
+
+  <div class="mytable" style="display: none;">
+    <table>
+      <thead>
+        <tr>
+          <th class="border-right">Flat No</th>
+          <th class="border-right" style="text-align: left;">Owner Name</th>
+          <th class="border-right">GL Code</th>
+          <th class="border-right datatd p0">
+            <table style="width: 100%;">
+              <tr class="border-bottom">
+                <th class="p0" colspan="2">APRIL {{currentYear}}</th>
+              </tr>
+              <tr>
+                <th class="border-right p0" style="width: 50%; border-bottom: 0px;">Cheque No.</th>
+                <th class="p0" style="width: 50%; border-bottom: 0px;">Amount</th>
+              </tr>
+            </table>
+          </th>
+          <th class="border-right datatd p0">
+            <table style="width: 100%;">
+              <tr class="border-bottom">
+                <th class="p0" colspan="2">MAY {{currentYear}}</th>
+              </tr>
+              <tr>
+                <th class="border-right p0" style="width: 50%; border-bottom: 0px;">Cheque No.</th>
+                <th class="p0" style="width: 50%; border-bottom: 0px;">Amount</th>
+              </tr>
+            </table>
+          </th>
+          <th class="border-right datatd p0">
+            <table style="width: 100%;">
+              <tr class="border-bottom">
+                <th class="p0" colspan="2">JUNE {{currentYear}}</th>
+              </tr>
+              <tr>
+                <th class="border-right p0" style="width: 50%; border-bottom: 0px;">Cheque No.</th>
+                <th class="p0" style="width: 50%; border-bottom: 0px;">Amount</th>
+              </tr>
+            </table>
+          </th>
+          <th class="border-right datatd p0">
+            <table style="width: 100%;">
+              <tr class="border-bottom">
+                <th class="p0" colspan="2">JULY {{currentYear}}</th>
+              </tr>
+              <tr>
+                <th class="border-right p0" style="width: 50%; border-bottom: 0px;">Cheque No.</th>
+                <th class="p0" style="width: 50%; border-bottom: 0px;">Amount</th>
+              </tr>
+            </table>
+          </th>
+          <th class="border-right datatd p0">
+            <table style="width: 100%;">
+              <tr class="border-bottom">
+                <th class="p0" colspan="2">AUGUST {{currentYear}}</th>
+              </tr>
+              <tr>
+                <th class="border-right p0" style="width: 50%; border-bottom: 0px;">Cheque No.</th>
+                <th class="p0" style="width: 50%; border-bottom: 0px;">Amount</th>
+              </tr>
+            </table>
+          </th>
+          <th class="border-right datatd p0">
+            <table style="width: 100%;">
+              <tr class="border-bottom">
+                <th class="p0" colspan="2">SEPTEMBER {{currentYear}}</th>
+              </tr>
+              <tr>
+                <th class="border-right p0" style="width: 50%; border-bottom: 0px;">Cheque No.</th>
+                <th class="p0" style="width: 50%; border-bottom: 0px;">Amount</th>
+              </tr>
+            </table>
+          </th>
+          <th class="border-right datatd p0">
+            <table style="width: 100%;">
+              <tr class="border-bottom">
+                <th class="p0" colspan="2">OCTOBER {{currentYear}}</th>
+              </tr>
+              <tr>
+                <th class="border-right p0" style="width: 50%; border-bottom: 0px;">Cheque No.</th>
+                <th class="p0" style="width: 50%; border-bottom: 0px;">Amount</th>
+              </tr>
+            </table>
+          </th>
+          <th class="border-right datatd p0">
+            <table style="width: 100%;">
+              <tr class="border-bottom">
+                <th class="p0" colspan="2">NOVEMBER {{currentYear}}</th>
+              </tr>
+              <tr>
+                <th class="border-right p0" style="width: 50%; border-bottom: 0px;">Cheque No.</th>
+                <th class="p0" style="width: 50%; border-bottom: 0px;">Amount</th>
+              </tr>
+            </table>
+          </th>
+          <th class="border-right datatd p0">
+            <table style="width: 100%;">
+              <tr class="border-bottom">
+                <th class="p0" colspan="2">DECEMBER {{currentYear}}</th>
+              </tr>
+              <tr>
+                <th class="border-right p0" style="width: 50%; border-bottom: 0px;">Cheque No.</th>
+                <th class="p0" style="width: 50%; border-bottom: 0px;">Amount</th>
+              </tr>
+            </table>
+          </th>
+          <th class="border-right datatd p0">
+            <table style="width: 100%;">
+              <tr class="border-bottom">
+                <th class="p0" colspan="2">JANUARY {{nextYear}}</th>
+              </tr>
+              <tr>
+                <th class="border-right p0" style="width: 50%; border-bottom: 0px;">Cheque No.</th>
+                <th class="p0" style="width: 50%; border-bottom: 0px;">Amount</th>
+              </tr>
+            </table>
+          </th>
+          <th class="border-right datatd p0">
+            <table style="width: 100%;">
+              <tr class="border-bottom">
+                <th class="p0" colspan="2">FEBRUARY {{nextYear}}</th>
+              </tr>
+              <tr>
+                <th class="border-right p0" style="width: 50%; border-bottom: 0px;">Cheque No.</th>
+                <th class="p0" style="width: 50%; border-bottom: 0px;">Amount</th>
+              </tr>
+            </table>
+          </th>
+          <th class="border-right datatd p0">
+            <table style="width: 100%;">
+              <tr class="border-bottom">
+                <th class="p0" colspan="2">MARCH {{nextYear}}</th>
+              </tr>
+              <tr>
+                <th class="border-right p0" style="width: 50%; border-bottom: 0px;">Cheque No.</th>
+                <th class="p0" style="width: 50%; border-bottom: 0px;">Amount</th>
+              </tr>
+            </table>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="border-bottom" style="height: 35px;" *ngFor="let record of records">
+          <td class="border-right" style="width: 4%;">{{record.asset.flatNo | titlecase}}</td>
+          <td class="border-right" style="width: 10%; text-align: left; padding-left: 8px;">
+            {{ (record.owner.name.length>32)? (record.owner.name | slice:0:32 | titlecase)+'..':(record.owner.name |
+            titlecase) }}
+          </td>
+          <td class="border-right" style="width: 3%;">{{record.owner.glCode}}</td>
+          <td class="datatd border-right" *ngFor="let payment of record.payments;  let i = index">
+            <div class="border-right amount_text duel-data" id="chkamt_{{payment.month}}_{{payment._id}}"
+              attr="{{payment.chequeNo}}" (dblclick)="chequeClick($event, payment.month, payment._id)">
+              {{payment.chequeNo}}</div>
+
+            <div class="amount_input border-right" id="chktxt_{{payment.month}}_{{payment._id}}" style="display: none;">
+              <input class="payment_input" type="text" id="chk_input_{{payment.month}}_{{payment._id}}"
+                value="{{payment.chequeNo}}" (keyup)="chequeInput($event, payment.month, payment.year, payment._id)"
+                (keydown.esc)="hideInput()" (keydown.tab)="hideInput()" (keydown.control)="hideInput()"
+                (keydown.alt)="hideInput()">
+            </div>
+
+
+            <div class="amount_text duel-data" id="amtamt_{{payment.month}}_{{payment._id}}" attr="{{payment.amount}}"
+              (dblclick)="amountClick($event, payment.month, payment._id)">{{payment.amount}}</div>
+            <div class="amount_input" id="amttxt_{{payment.month}}_{{payment._id}}" style="display: none;">
+              <input class="payment_input" type="text" id="amt_input_{{payment.month}}_{{payment._id}}"
+                value="{{payment.amount}}" (keyup)="amountInput($event, payment.month, payment.year, payment._id)"
+                (keydown.esc)="hideInput()" (keydown.tab)="hideInput()" (keydown.control)="hideInput()"
+                (keydown.alt)="hideInput()">
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+</div>
+
+<ng-template #details let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Add New (Financial Year {{currentYear}}-{{nextYear}})</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="d('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="position-relative mb-3 required">
+          <label for="type" class="form-label">Property Type</label>
+          <select id="type" class="form-select" (change)="changePropertyType($event)">
+            <option value="" disabled hidden selected>Select Property Type</option>
+            <option value="commercial">Commercial</option>
+            <option value="residential">Residential</option>
+          </select>
+          <span class="text-danger" id="errtype" style="display: none;">This field is required.</span>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="position-relative mb-3 required">
+          <label for="asset" class="form-label">Asset/Flat</label>
+          <select id="asset" class="form-select" (change)="changeAsset($event)">
+            <option value="" disabled hidden selected>Select Asset/Flat</option>
+            <option *ngFor="let asset of assets" [value]="asset._id">
+              {{asset.flatNo | titlecase}}, {{asset.address | titlecase}}, {{asset.location | titlecase}}
+            </option>
+          </select>
+          <span class="text-danger" id="errasset" style="display: none;">This field is required.</span>
+        </div>
+      </div>
+      <!-- <div class="col-md-6">
+        <div class="position-relative mb-3">
+          <label for="month" class="form-label">Month</label>
+          <select id="month" class="form-select" (change)="changeMonth($event)">
+            <option value="" disabled hidden selected>Select Month</option>
+            <option value="1">01 - January</option>
+            <option value="2">02 - February</option>
+            <option value="3">03 - March</option>
+            <option value="4">04 - April</option>
+            <option value="5">05 - May</option>
+            <option value="6">06 - June</option>
+            <option value="7">07 - July</option>
+            <option value="8">08 - August</option>
+            <option value="9">09 - September</option>
+            <option value="10">10 - October</option>
+            <option value="11">11 - November</option>
+            <option value="12">12 - December</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="position-relative mb-3">
+          <label for="year" class="form-label">Year</label>
+          <input type="text" class="form-control" id="year">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="position-relative mb-3">
+          <label for="chequeno" class="form-label">Cheque No.</label>
+          <input type="text" class="form-control" id="chequeno">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="position-relative mb-3">
+          <label for="amount" class="form-label">Amount</label>
+          <input type="text" class="form-control" id="amount">
+        </div>
+      </div> -->
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')" style="padding: 6px 30px;">Close</button>
+    <button *ngIf="!btnLoader" type="submit" class="mt-1 btn btn-success" (click)="onSubmit()"
+      style="padding: 6px 30px;">Submit</button>
+    <button *ngIf="btnLoader" type="submit" class="mt-1 btn btn-success disabled"
+      style="padding: 6px 30px;">Submit</button>
+  </div>
+</ng-template>

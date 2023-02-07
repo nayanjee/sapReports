@@ -1,0 +1,62 @@
+<div class="app-page-title">
+  <div class="page-title-wrapper">
+    <div class="page-title-heading">
+      <div class="page-title-icon">
+        <i class="icon {{icon}}"></i>
+      </div>
+      <div>
+        {{heading}}
+        <div class="page-title-subheading">
+          {{subheading}}
+        </div>
+      </div>
+    </div>
+    <!-- <div class="page-title-actions">
+      <button type="button" class="btn-shadow d-inline-flex align-items-center btn btn-success">
+        <fa-icon [icon]="faPlus" class="me-2"></fa-icon>
+        Create New
+      </button>
+    </div> -->
+  </div>
+</div>
+
+<div class="main-card mb-3 card">
+  <div class="card-body">
+    <div class="file-upload">
+      <input
+        type="file"
+        name="image"
+        ng2FileSelect
+        [uploader]="uploader"
+        accept="image/x-png,image/gif,image/jpeg"
+      />
+      <button
+        type="button"
+        (click)="uploader.uploadAll()"
+        [disabled]="!uploader.getNotUploadedItems().length"
+      >
+        Upload
+      </button>
+    </div>
+    
+    <form class="form" [formGroup]="myForm" (ngSubmit)="onSubmit()" autocomplete="off" enctype="multipart/form-data">
+      <!-- <div class="row">
+        <div class="col-md-6">
+          <div class="position-relative mb-3 required">
+            <label for="file" class="form-label">Upload Batch Excel Sheet</label>
+            <input type="file" class="custom-file-input" id="customFile" name="uploadedImage"
+            (change)="onFileSelect($event)" #UploadFileInput>
+            <label class="custom-file-label" for="customFile">{{fileInputLabel || 'Choose File'}}</label>
+          </div>
+        </div>
+
+        <div class="row">
+        <div class="col-md-6" style="text-align: center;">
+          <button *ngIf="!btnLoader" type="submit" class="mt-1 btn btn-success" style="padding: 6px 30px;">Submit</button>
+          <button *ngIf="btnLoader" type="submit" class="mt-1 btn btn-success disabled" style="padding: 6px 30px;">Submit</button>
+        </div>
+      </div>
+      </div> -->
+    </form>
+  </div>
+</div>

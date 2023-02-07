@@ -1,0 +1,63 @@
+<div class="app-page-title">
+  <div class="page-title-wrapper">
+    <div class="page-title-heading">
+      <div class="page-title-icon">
+        <i class="icon {{icon}}"></i>
+      </div>
+      <div>
+        {{heading}}
+        <div class="page-title-subheading">
+          {{subheading}}
+        </div>
+      </div>
+    </div>
+    <!-- <div class="page-title-actions">
+      <button type="button" class="btn-shadow d-inline-flex align-items-center btn btn-success">
+        <fa-icon [icon]="faPlus" class="me-2"></fa-icon>
+        Create New
+      </button>
+    </div> -->
+  </div>
+</div>
+
+<div class="main-card mb-3 card" style="min-height: 385px;">
+  <div class="card-body">
+    <form class="form" [formGroup]="myForm" (ngSubmit)="onSubmit()" autocomplete="off">
+      <div style="min-height: 65px;" class="col-md-6 offset-md-3">
+        <label for="type" class="form-label mb0">Report Type</label>
+        <ng-multiselect-dropdown name="type" [placeholder]="'Select Report Type'" [settings]="dropdownSettings"
+          [data]="types" formControlName="type" (onSelect)="onItemSelect($event)">
+        </ng-multiselect-dropdown>
+        <span class="text-danger" *ngIf="(f.type.touched || submitted) && f.type.errors?.required">
+          Field is required.
+        </span>
+      </div>
+
+      <div style="min-height: 65px;" class="col-md-6 offset-md-3">
+        <label for="year" class="form-label mb0">Year</label>
+        <ng-multiselect-dropdown name="year" [placeholder]="'Select Year'" [settings]="dropdownSettings"
+          [data]="years" formControlName="year" (onSelect)="onItemSelect($event)">
+        </ng-multiselect-dropdown>
+        <span class="text-danger" *ngIf="(f.year.touched || submitted) && f.year.errors?.required">
+          Field is required.
+        </span>
+      </div>
+
+      <div style="min-height: 65px;" class="col-md-6 offset-md-3">
+        <label for="month" class="form-label mb0">Month</label>
+        <ng-multiselect-dropdown name="month" [placeholder]="'Select Month'" [settings]="dropdownSettings"
+          [data]="months" formControlName="month" (onSelect)="onItemSelect($event)">
+        </ng-multiselect-dropdown>
+        <span class="text-danger" *ngIf="(f.month.touched || submitted) && f.month.errors?.required">
+          Field is required.
+        </span>
+      </div>
+
+      <div class="col-md-6 offset-md-3" style="text-align: center; margin-top: 8px;">
+        <!-- <button (click)="ExportTOExcel()" class="btn btn-success">Generate Report</button> -->
+        <button *ngIf="!btnLoader" type="submit" class="mt-1 btn btn-success" style="padding: 6px 30px;">Generate Report</button>
+        <button *ngIf="btnLoader" type="submit" class="mt-1 btn btn-success disabled" style="padding: 6px 30px;">Generate Report</button>
+      </div>
+    </form>
+  </div>
+</div>

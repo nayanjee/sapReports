@@ -1,0 +1,72 @@
+.mytable {
+  overflow-x:scroll;
+  flex-grow:1;
+  width:100%;
+}
+
+table {
+  border-collapse: collapse;
+  width:281%;
+  font-size: 12px;
+  text-align: center;
+}
+
+thead tr > th {
+  background:#ffffff;
+  position: sticky;
+  padding:.5rem;
+  z-index:2;
+  top: 0;
+  font-weight: 500;
+  /* color: #ced4da; */
+  color: rgba(0, 0, 0, 0.54);
+  border-bottom: 1px solid #ced4da;
+  letter-spacing: 0.5px;
+}
+
+thead tr > :first-child {
+  z-index:3;
+  left:0;
+  top:0;
+}
+
+td {
+  text-align:center;
+  letter-spacing: 0.5px;
+  font-size: 14px;
+}
+
+tbody tr > :first-child {
+  background:#ffffff;
+  position: sticky;
+  z-index:1;
+  left:0;
+}
+
+.p0 {
+  padding: 0 !important;
+}
+.border-right {
+  border-right:1px solid #ced4da;
+}
+.border-bottom {
+  border-bottom: 1px solid #ced4da;
+}
+.datatd {
+  width: 6%;
+}
+.duel-data {
+  float: left; 
+  width:50%; 
+  height: 35px; 
+  padding-top: 6px;
+}
+.amount_input {
+  float: left; 
+  width:50%; 
+}
+.payment_input {
+  width: 75%; 
+  height: 25px; 
+  margin-top: 5px
+}

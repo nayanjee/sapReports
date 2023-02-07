@@ -1,0 +1,274 @@
+<div class="app-page-title">
+  <div class="page-title-wrapper">
+    <div class="page-title-heading">
+      <div class="page-title-icon">
+        <i class="icon {{icon}}"></i>
+      </div>
+      <div>
+        {{heading}}
+        <div class="page-title-subheading">
+          {{subheading}}
+        </div>
+      </div>
+    </div>
+    <!-- <div class="page-title-actions">
+      <button type="button" class="btn-shadow d-inline-flex align-items-center btn btn-success">
+        <fa-icon [icon]="faPlus" class="me-2"></fa-icon>
+        Create New
+      </button>
+    </div> -->
+  </div>
+</div>
+
+<div class="main-card mb-3 card">
+  <div class="card-body">
+    <form class="form" [formGroup]="myForm" (ngSubmit)="onSubmit()" autocomplete="off">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="position-relative mb-3 required">
+            <label for="name" class="form-label">Owner Name</label>
+            <input type="text" class="form-control" id="name" formControlName="name" placeholder="Owner Name"
+              [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+            <span class="text-danger" *ngIf="(f.name.touched || submitted) && f.name.errors?.required">
+              Owner name is required.
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3 required">
+            <label for="glcode" class="form-label">GL Code</label>
+            <input type="text" class="form-control" id="glcode" formControlName="glcode" placeholder="GL Code"
+              [ngClass]="{ 'is-invalid': submitted && f.glcode.errors }">
+            <span class="text-danger" *ngIf="(f.glcode.touched || submitted) && f.glcode.errors?.required">
+              GL code is required.
+            </span>
+            <span class="text-danger" *ngIf="f.glcode.touched && f.glcode.errors?.pattern">
+              It must be a number only.
+            </span>
+            <span class="text-danger" *ngIf="f.glcode.touched && f.glcode.errors?.minlength">
+              The value must be 6 digit.
+            </span>
+            <span class="text-danger" *ngIf="f.glcode.touched && f.glcode.errors?.maxlength">
+              The value must be 6 digit.
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3 required">
+            <label for="ifsc" class="form-label">IFSC Code</label>
+            <input type="text" class="form-control" id="ifsc" formControlName="ifsc" placeholder="IFSC Code"
+              [ngClass]="{ 'is-invalid': submitted && f.ifsc.errors }">
+            <span class="text-danger" *ngIf="(f.ifsc.touched || submitted) && f.ifsc.errors?.required">
+              IFSC code is required
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3 required">
+            <label for="account" class="form-label">Account No.</label>
+            <input type="text" class="form-control" id="account" formControlName="account" placeholder="Account No."
+              [ngClass]="{ 'is-invalid': submitted && f.account.errors }">
+            <span class="text-danger" *ngIf="(f.account.touched || submitted) && f.account.errors?.required">
+              Account number is required
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3 required">
+            <label for="phone" class="form-label">Mobile No.</label>
+            <input type="text" class="form-control" id="phone" formControlName="phone" placeholder="Mobile No."
+              [ngClass]="{ 'is-invalid': submitted && f.phone.errors }">
+            <span class="text-danger" *ngIf="(f.phone.touched || submitted) && f.phone.errors?.required">
+              Mobile number is required
+            </span>
+            <span class="text-danger" *ngIf="f.phone.touched && f.phone.errors?.pattern">
+              It must be a number only.
+            </span>
+            <span class="text-danger" *ngIf="f.phone.touched && f.phone.errors?.minlength">
+              The value must be 10 digit.
+            </span>
+            <span class="text-danger" *ngIf="f.phone.touched && f.phone.errors?.maxlength">
+              The value must be 10 digit.
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3">
+            <label for="altphone" class="form-label">Alternative Mobile No.</label>
+            <input type="text" class="form-control" id="altphone" formControlName="altphone" placeholder="Alternative Mobile No.">
+            <span id="erraltphone" class="text-danger ng-star-inserted" style="display:none;"></span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3 required">
+            <label for="type" class="form-label">Property Type</label>
+            <select id="type" class="form-select" formControlName="type" [ngClass]="{ 'is-invalid': submitted && f.type.errors }">
+              <option value="" disabled hidden selected>
+                Select Property Type
+              </option>
+              <option value="commercial">Commercial</option>
+              <option value="residential">Residential</option>
+            </select>
+            <span class="text-danger" *ngIf="(f.type.touched || submitted) && f.type.errors?.required">
+              Property type is required
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3 required">
+            <label for="isco" class="form-label">Is Co-Owner</label>
+            <select id="isco" class="form-select" formControlName="isco" (change)="isCoOwnerHandler($event)"
+              [ngClass]="{ 'is-invalid': submitted && f.isco.errors }">
+              <option value="" disabled hidden selected>
+                Select Yes or No
+              </option>
+              <option value="1">Yes</option>
+              <option value="0">No</option>
+            </select>
+            <span class="text-danger" *ngIf="(f.isco.touched || submitted) && f.isco.errors?.required">
+              Select Yes or No
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="position-relative mb-3 required">
+            <label for="opercent" class="form-label">Owner Percentage</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="opercent" formControlName="opercent"
+                (keyup)="ownerPercentHandler($event)" placeholder="Owner Percentage"
+                [ngClass]="{ 'is-invalid': submitted && f.opercent.errors }">
+              <div class="">
+                <button class="btn btn-secondary">%</button>
+              </div>
+            </div>
+            <span class="text-danger" *ngIf="(f.opercent.touched || submitted) && f.opercent.errors?.required">
+              Owner percentage is required.
+            </span>
+            <span class="text-danger" *ngIf="f.opercent.touched && f.opercent.errors?.pattern">
+              Entered value isn't right.
+            </span>
+          </div>
+        </div>
+
+        <!-- Start Co-Owner add more -->
+        <div class="row showcoowner">
+          <div class="dropdown-divider" style="margin: 20px 10px;"></div>
+        </div>
+
+        <div class="row showcoowner" formArrayName="coowners">
+          <div class="row">
+            <div class="col-md-6" style="text-align: center; font-weight: 600;">
+              Co-Owner
+            </div>
+            <div class="col-md-6" style="text-align: right;">
+              <button type="button" (click)="addCoOwner()" class="mt-1 btn btn-primary">Add Co-Owner</button>
+            </div>
+          </div>
+
+          <div class="row" *ngFor="let quantity of coowners().controls; let i=index" [formGroupName]="i"
+            style="border: 1px solid #ccc; padding: 10px 0 0 0; margin: 10px 0 0 12px; border-radius: 5px;">
+            <div class="col-md-6">
+              <div class="position-relative mb-3 required">
+                <label for="coname{{i}}" class="form-label">Name</label>
+                <input type="text" class="form-control" id="coname{{i}}" formControlName="coname" placeholder="Name">
+                <span id="errconame{{i}}" class="text-danger ng-star-inserted" style="display:none;"></span>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="position-relative mb-3 required">
+                <label for="coglcode{{i}}" class="form-label">GL Code</label>
+                <input type="text" class="form-control" id="coglcode{{i}}" formControlName="coglcode"
+                  placeholder="GL Code">
+                <span id="errcoglcode{{i}}" class="text-danger ng-star-inserted" style="display:none;"></span>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="position-relative mb-3 required">
+                <label for="coifsc{{i}}" class="form-label">IFSC Code</label>
+                <input type="text" class="form-control" id="coifsc{{i}}" formControlName="coifsc"
+                  placeholder="IFSC Code">
+                <span id="errcoifsc{{i}}" class="text-danger ng-star-inserted" style="display:none;"></span>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="position-relative mb-3 required">
+                <label for="coaccount{{i}}" class="form-label">Account No.</label>
+                <input type="text" class="form-control" id="coaccount{{i}}" formControlName="coaccount"
+                  placeholder="Account No.">
+                <span id="errcoaccount{{i}}" class="text-danger ng-star-inserted" style="display:none;"></span>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="position-relative mb-3 required">
+                <label for="cophone{{i}}" class="form-label">Mobile No.</label>
+                <input type="text" class="form-control" id="cophone{{i}}" formControlName="cophone"
+                  placeholder="Mobile No.">
+                <span id="errcophone{{i}}" class="text-danger ng-star-inserted" style="display:none;"></span>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="position-relative mb-3">
+                <label for="coaltphone{{i}}" class="form-label">Alternative Mobile No.</label>
+                <input type="text" class="form-control" id="coaltphone{{i}}" formControlName="coaltphone"
+                  placeholder="Alternative Mobile No.">
+                <span id="errcoaltphone{{i}}" class="text-danger ng-star-inserted" style="display:none;"></span>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="position-relative mb-3 required">
+                <label for="copercent{{i}}" class="form-label">Percentage</label>
+                <input type="text" class="form-control" id="copercent{{i}}" formControlName="copercent"
+                  placeholder="Percentage">
+                <span id="errcopercent{{i}}" class="text-danger ng-star-inserted" style="display:none;"></span>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <button type="button" (click)="removeCoOwner(i)" class="mt-1 btn btn-danger"
+                style="margin-top: 28px !important;">Remove</button>
+            </div>
+
+          </div>
+        </div>
+        <!-- End Co-Owner add more -->
+
+        <div class="row">
+          <div class="dropdown-divider" style="margin: 10px 10px;"></div>
+        </div>
+
+        <div class="col-md-12 formError" style="text-align: center; display: none;">
+          <span class="text-danger" id="errorMsg" style="font-weight: 600; font-size:13px;"></span>
+        </div>
+        <div class="row formError" style="display: none;">
+          <div class="dropdown-divider" style="margin: 10px 10px;"></div>
+        </div>
+
+        <div class="col-md-6" style="text-align: center;">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" formControlName="addestate" value="1">
+            <label class="form-check-label" for="inlineCheckbox1">Add property after adding owner and
+              co-owner</label>
+          </div>
+        </div>
+        <div class="col-md-6" style="text-align: center;">
+          <button *ngIf="!btnLoader" type="submit" class="mt-1 btn btn-success" style="padding: 6px 30px;">Submit</button>
+          <button *ngIf="btnLoader" type="submit" class="mt-1 btn btn-success disabled" style="padding: 6px 30px;">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

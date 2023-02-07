@@ -1,0 +1,197 @@
+<div class="app-page-title">
+  <div class="page-title-wrapper">
+    <div class="page-title-heading">
+      <div class="page-title-icon">
+        <i class="icon {{icon}}"></i>
+      </div>
+      <div>
+        {{heading}}
+        <div class="page-title-subheading">
+          {{subheading}}
+        </div>
+      </div>
+    </div>
+    <div class="page-title-actions">
+      <button type="button" class="btn-shadow d-inline-flex align-items-center btn btn-success"
+        (click)="redirectPage('/owner/create?type=commercial')">
+        <fa-icon [icon]="faPlus" class="me-2"></fa-icon>
+        Create New
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="main-card mb-3 card">
+  <!-- <div class="card-header">
+    <div class="row">
+      <div class="col-md-3">
+        <button class="mb-2 me-2 btn-hover-shine btn btn-info" style="width: 100%;">Residential
+        </button>
+      </div>
+      <div class="col-md-3">
+        <button class="mb-2 me-2 btn-transition btn btn-outline-info" (click)="redirectPage('/owner/commercial')" style="width: 100%;">Commercial
+        </button>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="card-header">
+    <div class="row">
+      <div class="col-md-3">
+        <input type="text" id="name" placeholder="Search by Owner Name" (keyup)="filterName($event)"
+          class="mb-2 form-control" autocomplete="off" />
+      </div>
+      <div class="col-md-3">
+        <input type="text" id="glcode" placeholder="Search by GL Code" (keyup)="filterGlCode($event)"
+          class="mb-2 form-control" autocomplete="off" />
+      </div>
+      <div class="col-md-3">
+        <input type="text" id="phone" placeholder="Search by Mobile No." (keyup)="filterPhone($event)"
+          class="mb-2 form-control" autocomplete="off" />
+      </div>
+      <div class="col-md-3">
+        <button class="mb-2 me-2 btn-transition btn btn-outline-warning" (click)="clearAll()" style="width: 100%;">Reset
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ngx-datatable #myTable class="material ngx-datatable" [rows]="owners" [scrollbarH]="true" [headerHeight]="50"
+    [footerHeight]="50" [rowHeight]="50" [limit]="10" [sorts]="[{prop: 'name', dir: 'asc'}]">
+
+    <ngx-datatable-column name="Owner Name" prop="name" [width]="312">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        {{row.name | titlecase}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="GL Code" prop="glCode" [width]="90">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        {{row.glCode}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="IFSC Code" prop="ifsc" [width]="150">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        {{row.ifsc}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Account No." prop="accountNo" [width]="150">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        {{row.accountNo}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Mobile" prop="phone" [width]="100">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        {{row.phone}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Status" prop="isActive" [width]="90">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <div *ngIf="row.isActive" class="badge rounded-pill bg-success" style="cursor:pointer;" (click)="confirmBoxStatus(row._id, 0)" placement="bottom" ngbTooltip="Deactivate">Active</div>
+        <div *ngIf="!row.isActive" class="badge rounded-pill bg-warning" style="cursor:pointer;" (click)="confirmBoxStatus(row._id, 1)" placement="bottom" ngbTooltip="Activate">In Active</div>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Action" cellClass="d-flex align-items-center" [sortable]="false" [width]="125">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <div class="action">
+          <a [routerLink]="" (click)="viewPopup(details, row._id)" placement="bottom" ngbTooltip="Details"><i class="icon pe-7s-light"
+              style="color: #ffffff !important;"></i></a>
+        </div>
+        <div class="action">
+          <a [routerLink]="" (click)="redirectPage('/owner/update?oid='+row._id)" placement="bottom" ngbTooltip="Edit"><i class="icon pe-7s-pen" style="color: #ffffff !important;"></i></a>
+        </div>
+        <div class="action">
+          <a [routerLink]="" (click)="confirmBoxDelete(row._id)" placement="bottom" ngbTooltip="Delete"><i class="icon pe-7s-trash" style="color: #ffffff !important;"></i></a>
+        </div>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <!-- <ngx-datatable-column name="Gender"></ngx-datatable-column> -->
+
+  </ngx-datatable>
+</div>
+
+<ng-template #details let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Owner Details</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="d('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-sm-3 detail_popup_top1">Property Type</div>
+      <div class="col-md-1 detail_popup_top2">:</div>
+      <div class="col-md-8 detail_popup_top3">{{temp2[0].propertyType | titlecase}}</div>
+
+      <div class="col-md-3 detail_popup_middle1">Owner Name</div>
+      <div class="col-md-1 detail_popup_middle2">:</div>
+      <div class="col-md-8 detail_popup_middle3">{{temp2[0].name | titlecase}}</div>
+
+      <div class="col-md-3 detail_popup_middle1">GL Code</div>
+      <div class="col-md-1 detail_popup_middle2">:</div>
+      <div class="col-md-8 detail_popup_middle3">{{temp2[0].glCode}}</div>
+
+      <div class="col-md-3 detail_popup_middle1">IFSC Code</div>
+      <div class="col-md-1 detail_popup_middle2">:</div>
+      <div class="col-md-8 detail_popup_middle3">{{temp2[0].ifsc}}</div>
+
+      <div class="col-md-3 detail_popup_middle1">Account Number</div>
+      <div class="col-md-1 detail_popup_middle2">:</div>
+      <div class="col-md-8 detail_popup_middle3">{{temp2[0].accountNo}}</div>
+
+      <div class="col-md-3 detail_popup_middle1">Percentage</div>
+      <div class="col-md-1 detail_popup_middle2">:</div>
+      <div class="col-md-8 detail_popup_middle3">{{temp2[0].percentage}}%</div>
+
+      <div class="col-md-3 detail_popup_middle1">Mobile</div>
+      <div class="col-md-1 detail_popup_middle2">:</div>
+      <div class="col-md-8 detail_popup_middle3">{{temp2[0].phone}}</div>
+
+      <div class="col-md-3 detail_popup_bottom1">Alternative Mobile</div>
+      <div class="col-md-1 detail_popup_bottom2">:</div>
+      <div class="col-md-8 detail_popup_bottom3">{{temp2[0].altPhone}}</div>
+
+      <div *ngIf="temp2[0].isPartner">
+        <div class="col-md-12 coowner_head">Co-Owner</div>
+
+        <div *ngFor="let co of temp2[0].coowner" class="coowner_div">
+          <div class="col-md-3 detail_popup_middle1 fl">Name</div>
+          <div class="col-md-1 detail_popup_middle2 fl">:</div>
+          <div class="col-md-8 detail_popup_middle3 fl">{{co.name}}</div>
+
+          <div class="col-md-3 detail_popup_middle1 fl">GL Code</div>
+          <div class="col-md-1 detail_popup_middle2 fl">:</div>
+          <div class="col-md-8 detail_popup_middle3 fl">{{co.glCode}}</div>
+
+          <div class="col-md-3 detail_popup_middle1 fl">IFSC Code</div>
+          <div class="col-md-1 detail_popup_middle2 fl">:</div>
+          <div class="col-md-8 detail_popup_middle3 fl">{{co.ifsc}}</div>
+
+          <div class="col-md-3 detail_popup_middle1 fl">Account Number</div>
+          <div class="col-md-1 detail_popup_middle2 fl">:</div>
+          <div class="col-md-8 detail_popup_middle3 fl">{{co.accountNo}}</div>
+
+          <div class="col-md-3 detail_popup_middle1 fl">Percentage</div>
+          <div class="col-md-1 detail_popup_middle2 fl">:</div>
+          <div class="col-md-8 detail_popup_middle3 fl">{{co.percentage}}%</div>
+
+          <div class="col-md-3 detail_popup_middle1 fl">Mobile</div>
+          <div class="col-md-1 detail_popup_middle2 fl">:</div>
+          <div class="col-md-8 detail_popup_middle3 fl">{{co.phone}}</div>
+
+          <div class="col-md-3 detail_popup_bottom1 fl">Alternative Mobile</div>
+          <div class="col-md-1 detail_popup_bottom2 fl">:</div>
+          <div class="col-md-8 detail_popup_bottom3 fl">{{co.altPhone}}</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>

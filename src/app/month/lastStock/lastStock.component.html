@@ -1,0 +1,105 @@
+<div class="app-page-title">
+  <div class="page-title-wrapper">
+    <div class="page-title-heading">
+      <div class="page-title-icon">
+        <i class="icon {{icon}}"></i>
+      </div>
+      <div>
+        {{heading}}
+        <div class="page-title-subheading">
+          {{subheading}}
+        </div>
+
+      </div>
+    </div>
+    <!-- <div class="page-title-actions">
+      <button type="button" class="btn-shadow d-inline-flex align-items-center btn btn-success">
+        <fa-icon [icon]="faPlus" class="me-2"></fa-icon>
+        Create New
+      </button>
+    </div> -->
+  </div>
+</div>
+
+<div class="main-card mb-3 card" style="min-height: 385px;">
+  <div class="card-body">
+    <form class="form" [formGroup]="myForm" (ngSubmit)="onSubmit()" autocomplete="off">
+      <div style="min-height: 65px;" class="col-md-6 offset-md-3">
+        <label for="plant" class="form-label mb0">Plant</label>
+        <ng-multiselect-dropdown name="plant" [placeholder]="'Select Plant'" [settings]="dropdownSettingsPlant"
+          [data]="plants" formControlName="plant" (onSelect)="onItemSelect($event)">
+        </ng-multiselect-dropdown>
+        <span class="text-danger" *ngIf="(f.plant.touched || submitted) && f.plant.errors?.required">
+          Field is required.
+        </span>
+      </div>
+
+      <div style="min-height: 65px;" class="col-md-6 offset-md-3">
+        <label for="division" class="form-label mb0">Division</label>
+        <ng-multiselect-dropdown name="division" [placeholder]="'Select Division'" [settings]="dropdownSettingsDivision"
+          [data]="divisions" formControlName="division" (onSelect)="onItemSelect($event)">
+        </ng-multiselect-dropdown>
+        <span class="text-danger" *ngIf="(f.division.touched || submitted) && f.division.errors?.required">
+          Field is required.
+        </span>
+      </div>
+
+      <!-- <div style="height: 65px;" class="col-md-6 offset-md-3">
+        <label for="fromMonth" class="form-label mb0">Division</label><br>
+        <ng-month-picker name="fromMonth" formControlName="fromMonth" [displayFormat]="'MM/YYYY'" [showIcon]="false" (ngModelChange)="changeValue($event)"></ng-month-picker> - 
+        <ng-month-picker name="toMonth" formControlName="toMonth" [displayFormat]="'MM/YYYY'" [showIcon]="false" (ngModelChange)="changeValue($event)"></ng-month-picker>
+      </div> -->
+      
+      <div class="col-md-6 offset-md-3">
+        <label for="fromMonth" class="form-label mb0">Date 
+          <span style="font-size: 12px; color:#888888;">(Choose a maximum limit of 12 months)</span>
+        </label><br>
+        <div style="width:48%; display: inline-block; vertical-align: top;">
+          <ng-multiselect-dropdown name="fromYear" [placeholder]="'Select from Year'" [settings]="dropdownSettingsPlant"
+            [data]="fromYears" formControlName="fromYear" (onSelect)="onFromYearSelect($event)">
+          </ng-multiselect-dropdown>
+          <span class="text-danger" *ngIf="(f.fromYear.touched || submitted) && f.fromYear.errors?.required">
+            Field is required.
+          </span>
+        </div>
+        <div style="width:4%; display: inline-block; padding: 7px 0px 0px 7px; vertical-align: top;">-</div>
+        <div style="width:48%; display: inline-block; vertical-align: top;">
+          <ng-multiselect-dropdown name="fromMonth" [placeholder]="'Select from Month'" [settings]="dropdownSettingsPlant"
+            [data]="fromMonths" formControlName="fromMonth" (onSelect)="onItemSelect($event)">
+          </ng-multiselect-dropdown>
+          <span class="text-danger" *ngIf="(f.fromMonth.touched || submitted) && f.fromMonth.errors?.required">
+            Field is required.
+          </span>
+        </div>
+        <div style="width:100%; display: inline-block; text-align: center;">To
+          <span id="errfromblank" class="text-danger" style="display: none; vertical-align: top;">&nbsp;</span>
+        </div>
+        <div style="width:48%; display: inline-block; vertical-align: top;">
+          <ng-multiselect-dropdown name="toYear" [placeholder]="'Select to Year'" [settings]="dropdownSettingsPlant"
+            [data]="toYears" formControlName="toYear" (onSelect)="onToYearSelect($event)">
+          </ng-multiselect-dropdown>
+          <span id="errtoyear" class="text-danger" style="display: none;">&nbsp;</span>
+        </div>
+        <div style="width:4%; display: inline-block; padding: 7px 0px 0px 7px; vertical-align: top;">-</div>
+        <div style="width:48%; display: inline-block; vertical-align: top;">
+          <ng-multiselect-dropdown name="toMonth" [placeholder]="'Select to Month'" [settings]="dropdownSettingsPlant"
+            [data]="toMonths" formControlName="toMonth" (onSelect)="onItemSelect($event)">
+          </ng-multiselect-dropdown>
+          <span id="errtomonth" class="text-danger" style="display: none;">&nbsp;</span>
+        </div>
+      </div>
+
+      <div style="margin-top: 8px;" class="col-md-6 offset-md-3">
+        <label for="" class="form-label mb0">Report Sales/Stocks</label><br>
+        <input type="text" class="form-control" placeholder="Sale Report Last Stock" 
+          value="Sale Report Last Stock" style="border: 1px solid #adadad;" disabled="true">
+      </div>
+
+      <div class="col-md-6 offset-md-3" style="text-align: center; margin-top: 8px;">
+        <!-- <button (click)="ExportTOExcel()" class="btn btn-success">Generate Report</button> -->
+        <button *ngIf="!btnLoader" type="submit" class="mt-1 btn btn-success" style="padding: 6px 30px;">Generate Report</button>
+        <button *ngIf="btnLoader" type="submit" class="mt-1 btn btn-success disabled" style="padding: 6px 30px;">Generate Report</button>
+      </div>
+    </form>
+  </div>
+</div>
